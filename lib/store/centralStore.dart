@@ -3,12 +3,56 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:iweather/services/service.dart';
 
 class CentralState extends ChangeNotifier  {
   List<String> _cities = [];
+  Map<String,dynamic> _forcast = {
+    "location": {
+      "name": "Akure",
+      "region": "Ondo",
+      "country": "Nigeria",
+      "lat": 7.25,
+      "lon": 5.2,
+      "tz_id": "Africa/Lagos",
+      "localtime_epoch": 1568978885,
+      "localtime": "2019-09-20 12:28"
+    },
+    "current": {
+      "temp_c": 26,
+      "temp_f": 78.8,
+      "is_day": 1,
+      "condition": {
+        "text": "Partly cloudy",
+        "icon": "//cdn.apixu.com/weather/64x64/day/116.png",
+        "code": 1003
+      },
+      "wind_mph": 0,
+      "wind_kph": 0,
+      "wind_degree": 0,
+      "wind_dir": "N",
+      "pressure_mb": 1016,
+      "pressure_in": 30.5,
+      "precip_mm": 0.8,
+      "precip_in": 0.03,
+      "humidity": 79,
+      "cloud": 50,
+      "feelslike_c": 28.5,
+      "feelslike_f": 83.2,
+      "vis_km": 10,
+      "vis_miles": 6,
+      "uv": 7,
+      "gust_mph": 4.9,
+      "gust_kph": 7.9
+    },
+    "forecast": {
+      "forecastday": []
+    }
+  };
   String _city = "";
 
   List<String> get cities => _cities;
+  Map<String,dynamic> get forcast => _forcast;
 
   String get cityName => _city;
 
@@ -21,7 +65,7 @@ class CentralState extends ChangeNotifier  {
     dynamic res = await loadAsset();
     Map<String, dynamic> jsonCities = json.decode(res.toString());
     jsonCities.forEach((String key, dynamic value){
-        _cities = [..._cities, ...value];
+        _cities = Set.of([..._cities, ...value]).cast<String>().toList(); //remove duplicate from list
     });
     notifyListeners();
   }
@@ -31,23 +75,10 @@ class CentralState extends ChangeNotifier  {
   }
 
 
-  Future<dynamic> authenticate(String username, String password) async {
-    notifyListeners();
+  Future<dynamic> getForcast() async {
+    DataService _service = new DataService();
 
-    final Map<String, String> _userCredentials = {};
-    _userCredentials["username"] = username;
-    _userCredentials["password"] = password;
-
-    try {
-      
-    }
-    catch(error){
-      print("error");
-      print(error);
-    }
-
-    notifyListeners();
-    return {};
+    _forcast = json.decode(_service.getForcastFromService("Lagos").toString());
   }
 
 }

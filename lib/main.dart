@@ -47,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final centralState = Provider.of<CentralState>(context);
 
     centralState.loadCities();
+    centralState.getForcast();
   }
 
   startTimeout() async {

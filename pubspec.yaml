@@ -26,6 +26,8 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   autocomplete_textfield: ^1.7.3
   provider: ^3.1.0
+  geolocator: ^5.1.3
+  dio: ^3.0.1
 
 dev_dependencies:
   flutter_test:
