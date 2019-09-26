@@ -19,7 +19,7 @@ class CentralState extends ChangeNotifier  {
       "localtime": "2019-09-20 12:28"
     },
     "current": {
-      "temp_c": 26,
+      "temp_c": 28,
       "temp_f": 78.8,
       "is_day": 1,
       "condition": {
@@ -46,7 +46,7 @@ class CentralState extends ChangeNotifier  {
       "gust_kph": 7.9
     },
     "forecast": {
-      "forecastday": []
+      "forecastday": null
     }
   };
   String _city = "";
@@ -75,10 +75,13 @@ class CentralState extends ChangeNotifier  {
   }
 
 
-  Future<dynamic> getForcast() async {
+  void getForcast(String city) async {
     DataService _service = new DataService();
 
-    _forcast = json.decode(_service.getForcastFromService("Lagos").toString());
+    dynamic response = await _service.getForcastFromService(city);
+
+    _forcast = json.decode(response.toString());
+    notifyListeners();
   }
 
 }

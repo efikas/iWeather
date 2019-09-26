@@ -5,7 +5,10 @@ import 'package:iweather/widgets/searchCard.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Forcast extends StatelessWidget {
-  var _hour = new DateTime.now().hour;
+  Function openSettings;
+  var hour;
+
+  Forcast({Key key, @required this.openSettings, @required this.hour}):super(key:key);
 
   List<Color> _day = [
     Color.fromRGBO(133, 140, 253, 1),
@@ -26,12 +29,13 @@ class Forcast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final centralState = Provider.of<CentralState>(context);
+    Map<String, dynamic> forcast = centralState.forcast;
 
     
     return Stack(
         children: <Widget>[
           Container(
-            height: (MediaQuery.of(context).size.height / 2) + 70,
+            height: (MediaQuery.of(context).size.height / 2) + 100,
             child: ClipPath(
               child: Container(
                 decoration: new BoxDecoration(
@@ -40,7 +44,7 @@ class Forcast extends StatelessWidget {
                       end: Alignment.bottomCenter,
                       colors: [
                         ...(){
-                          return (_hour > 6 ) ? (_hour < 20) ? _day : _night : _night;
+                          return (hour > 6 ) ? (hour < 20) ? _day : _night : _night;
                         }()
                       ]
                     ),
@@ -57,8 +61,8 @@ class Forcast extends StatelessWidget {
             right: 40,
             top: 100,
             child: (){
-                  return (_hour > 6 ) 
-                      ? (_hour < 20) ? Image.asset("assets/images/sunny.png", height: 120,) 
+                  return (hour > 6 ) 
+                      ? (hour < 20) ? Image.asset("assets/images/sunny.png", height: 120,) 
                         : Icon(FontAwesomeIcons.moon, color: Colors.yellow.shade700, size: 100,) 
                           : Icon(FontAwesomeIcons.moon, color: Colors.yellow.shade700, size: 100,);
                 }()
@@ -74,7 +78,7 @@ class Forcast extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("20", style: TextStyle(
+                    Text(forcast["current"]["temp_c"].toInt().toString(), style: TextStyle(
                       fontSize: 90,
                       color: Colors.white,
                     ),),
@@ -100,11 +104,11 @@ class Forcast extends StatelessWidget {
                     )
                   ],
                 ),
-                Text("Karachi", style: TextStyle(
+                Text(forcast["location"]["name"], style: TextStyle(
                   fontSize: 30,
                   color: Colors.white,
                 ),),
-                Text("Clear", style: TextStyle(
+                Text(forcast["current"]["condition"]["text"], style: TextStyle(
                   fontSize: 15,
                   color: Colors.white,
                 ),)
@@ -120,8 +124,10 @@ class Forcast extends StatelessWidget {
             top: (MediaQuery.of(context).size.height / 2),
             child: FloatingActionButton(
               backgroundColor: Color.fromRGBO(185, 186, 255, 1),
-              onPressed: (){},
-              child: Icon(Icons.arrow_forward_ios),
+              onPressed: (){
+                openSettings();
+              },
+              child: Icon(Icons.settings),
             ),
           ),
 

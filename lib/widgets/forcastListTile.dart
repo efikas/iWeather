@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ForcastListTile extends StatelessWidget {
   String day;
-  String weatherStatus;
+  String weatherIcon;
   List weatherReadings;
 
   ForcastListTile({Key key, 
                 @required this.day, 
-                @required this. weatherStatus, 
+                @required this. weatherIcon, 
                 @required this.weatherReadings}): assert(day != null),
-                                                  assert(weatherStatus != null),
+                                                  assert(weatherIcon != null),
                                                   assert(weatherReadings != null),
                                                   super(key: key);
-  Map<String, dynamic> weatherIcons = {
-    "sunny": Icon(Icons.wb_sunny, color: Colors.yellow.shade600, ),
-    "raining": Icon(FontAwesomeIcons.cloudRain, color: Colors.grey.shade300, ),
-    "cloudy": Icon(FontAwesomeIcons.cloud, color: Colors.grey.shade300, ),
-    "cloudyMoonRainy": Icon(FontAwesomeIcons.cloudMoonRain, color: Colors.grey.shade300, ),
-    "cloudyMoon": Icon(FontAwesomeIcons.cloudMoon, color: Colors.grey.shade300, ),
-    "sunnyCloundy": Icon(FontAwesomeIcons.cloudSun, color: Colors.yellow.shade700, ),
-    "sunnyCloundyRainy": Icon(FontAwesomeIcons.cloudSunRain, color: Colors.yellow.shade600, ),
-    "night": Icon(FontAwesomeIcons.moon, color: Colors.yellow.shade600, ),
-  };
+  // Map<String, dynamic> weatherIcons = {
+  //   "sunny": Icon(Icons.wb_sunny, color: Colors.yellow.shade600, ),
+  //   "raining": Icon(FontAwesomeIcons.cloudRain, color: Colors.grey.shade300, ),
+  //   "cloudy": Icon(FontAwesomeIcons.cloud, color: Colors.grey.shade300, ),
+  //   "cloudyMoonRainy": Icon(FontAwesomeIcons.cloudMoonRain, color: Colors.grey.shade300, ),
+  //   "cloudyMoon": Icon(FontAwesomeIcons.cloudMoon, color: Colors.grey.shade300, ),
+  //   "sunnyCloundy": Icon(FontAwesomeIcons.cloudSun, color: Colors.yellow.shade700, ),
+  //   "sunnyCloundyRainy": Icon(FontAwesomeIcons.cloudSunRain, color: Colors.yellow.shade600, ),
+  //   "night": Icon(FontAwesomeIcons.moon, color: Colors.yellow.shade600, ),
+  // };
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -33,7 +34,13 @@ class ForcastListTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           SizedBox(),
-          weatherIcons[weatherStatus],
+
+          SizedBox(
+            height: 40,
+            child:  CachedNetworkImage(
+              imageUrl: "http:\/\/" + weatherIcon.split("\/\/")[1],
+            ),
+          ),
           Row(
             children: <Widget>[
               Text(weatherReadings[0].toString(), style: TextStyle(
