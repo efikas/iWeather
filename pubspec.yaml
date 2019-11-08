@@ -30,6 +30,7 @@ dependencies:
   location: ^2.3.5
   dio: ^3.0.1
   cached_network_image: ^1.1.1
+  flutter_launcher_icons: ^0.7.2+1
 
 dev_dependencies:
   flutter_test:
